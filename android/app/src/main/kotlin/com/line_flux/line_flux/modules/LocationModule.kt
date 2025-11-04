@@ -18,20 +18,14 @@ class LocationModule : LocationHostApi {
 
     @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
     override fun start(dataSource: String) {
-        val sensorDTO: LocationDataSourceDTO = jsonConverter.fromJson(dataSource, LocationDataSourceDTO::class.java)
-
-        val existSensor = sensorManager.findSensor(sensorDTO.id)
-        if(existSensor != null) {
-            sensorManager.addSensor(sensorDTO.toDataModel())
-        }
+        val sensorDTO: LocationDataSourceDTO =
+            jsonConverter.fromJson(dataSource, LocationDataSourceDTO::class.java)
+        sensorManager.setSensor(sensorDTO.toDataModel())
+        sensorManager.startActivity()
     }
 
-    override fun stop(dataSourceId: String) {
-        val existSensor = sensorManager.findSensor(dataSourceId)
-
-        if (existSensor != null) {
-            sensorManager.removeSensor(existSensor)
-        }
+    override fun stop() {
+        sensorManager.stopActivity()
     }
 
     override fun getStatus(dataSourceId: String): String? {

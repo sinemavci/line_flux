@@ -4,7 +4,7 @@ import 'package:pigeon/pigeon.dart';
 abstract class LocationHostApi {
   void start(String dataSource);
 
-  void stop(String dataSourceId);
+  void stop();
 
   String? getStatus(String dataSourceId);
   //

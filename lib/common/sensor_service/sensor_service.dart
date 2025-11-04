@@ -8,7 +8,7 @@ class SensorService {
     await _sensorServiceHook.start(dataSource: dataSource);
   }
 
-  Future<void> stop({required LocationDataSource dataSource}) async {
-    await _sensorServiceHook.stop(dataSource: dataSource);
+  Future<void> stop() async {
+    await _sensorServiceHook.stop();
   }
 }

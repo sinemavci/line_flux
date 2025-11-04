@@ -17,9 +17,9 @@ class SensorServiceHook {
     }
   }
 
-  Future<void> stop({required LocationDataSource dataSource}) async {
+  Future<void> stop() async {
     try {
-      await _hostApi.stop(dataSource.id);
+      await _hostApi.stop();
     }
     catch(e, stace) {
       throw 'exception: ${e} ${stace}';
