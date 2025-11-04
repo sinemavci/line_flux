@@ -9,7 +9,7 @@ data class CoordinateDTO(
 ) {
   companion object {
     fun fromDataModel(coordinate: Coordinate): CoordinateDTO {
-      return _root_ide_package_.com.line_flux.line_flux.dtos.coordinate.CoordinateDTO(
+      return CoordinateDTO(
         latitude = coordinate.latitude,
         longitude = coordinate.longitude,
         altitude = coordinate.altitude

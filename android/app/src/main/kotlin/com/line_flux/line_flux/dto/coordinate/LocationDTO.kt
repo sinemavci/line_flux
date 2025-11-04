@@ -10,11 +10,11 @@ data class LocationDTO(
 ) {
   companion object {
     fun fromDataModel(location: Location): LocationDTO {
-      return _root_ide_package_.com.line_flux.line_flux.dtos.coordinate.LocationDTO(
+      return LocationDTO(
         time = location.time,
         speed = location.speed,
         bearing = location.bearing,
-        coordinate = _root_ide_package_.com.line_flux.line_flux.dto.coordinate.CoordinateDTO.fromDataModel(
+        coordinate = CoordinateDTO.fromDataModel(
           location.coordinate
         ),
       )
