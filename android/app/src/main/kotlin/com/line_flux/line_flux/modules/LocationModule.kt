@@ -6,6 +6,12 @@ import com.google.gson.Gson
 import com.kotlin.sensor_drawing_plugin.SensorManager
 import com.line_flux.line_flux.dto.data_source.LocationDataSourceDTO
 import com.line_flux.line_flux.location.LocationHostApi
+import kotlinx.coroutines.launch
+import android.util.Log
+import com.kotlin.sensor_drawing_plugin.ServiceLocator
+import com.line_flux.line_flux.observers.SensorObserver
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 
 // todo: projenin amacini kafanda oturt, sema cikar. Simdilik kullanici tracking'e baslat ile tek gps ds dinleyecek ve bu da arka planda
 // location verisini toplayip painter sinifina gondererk cizgi cizecek. Bunu da hariyata overlay olarak ekleyerek yapacagiz.
@@ -15,17 +21,31 @@ import com.line_flux.line_flux.location.LocationHostApi
 class LocationModule : LocationHostApi {
     val jsonConverter = Gson()
     private val sensorManager = SensorManager()
+    private val sensorObserver = SensorObserver()
 
     @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
     override fun start(dataSource: String) {
         val sensorDTO: LocationDataSourceDTO =
             jsonConverter.fromJson(dataSource, LocationDataSourceDTO::class.java)
-        sensorManager.setSensor(sensorDTO.toDataModel())
+        val sensor = sensorDTO.toDataModel()
+        sensorManager.setSensor(sensor)
         sensorManager.startActivity()
     }
 
     override fun stop() {
         sensorManager.stopActivity()
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    override fun on(dataSource: String) {
+        //todo: apply id match for getsensor
+        val sensor = sensorManager.getSensor()
+        ServiceLocator.scope.launch(Dispatchers.Main) {
+            sensor?.locationChangedFlow?.collect {
+                Log.e("location changed: ", "location changed: ${it.coordinate.latitude}")
+                sensorObserver.onSensorChanged()
+            }
+        }
     }
 
     override fun getStatus(dataSourceId: String): String? {

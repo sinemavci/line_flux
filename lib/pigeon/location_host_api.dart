@@ -6,6 +6,8 @@ abstract class LocationHostApi {
 
   void stop();
 
+  void on(String dataSource);
+
   String? getStatus(String dataSourceId);
   //
   // void on(String viewKey, String dataSourceId, String eventName, String eventId);

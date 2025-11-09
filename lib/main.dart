@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:line_flux/common/hooks/sensor_service_hook.dart';
 import 'package:line_flux/common/model/location/location_data_source.dart';
 import 'package:line_flux/common/sensor_service/sensor_service.dart';
 

@@ -60,6 +60,7 @@ private open class LocationModulePigeonPigeonCodec : StandardMessageCodec() {
 interface LocationHostApi {
   fun start(dataSource: String)
   fun stop()
+  fun on(dataSource: String)
   fun getStatus(dataSourceId: String): String?
 
   companion object {
@@ -95,6 +96,24 @@ interface LocationHostApi {
           channel.setMessageHandler { _, reply ->
             val wrapped: List<Any?> = try {
               api.stop()
+              listOf(null)
+            } catch (exception: Throwable) {
+              LocationModulePigeonPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.line_flux.LocationHostApi.on$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val dataSourceArg = args[0] as String
+            val wrapped: List<Any?> = try {
+              api.on(dataSourceArg)
               listOf(null)
             } catch (exception: Throwable) {
               LocationModulePigeonPigeonUtils.wrapError(exception)
