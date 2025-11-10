@@ -41,9 +41,9 @@ class LocationModule : LocationHostApi {
         //todo: apply id match for getsensor
         val sensor = sensorManager.getSensor()
         ServiceLocator.scope.launch(Dispatchers.Main) {
-            sensor?.locationChangedFlow?.collect {
-                Log.e("location changed: ", "location changed: ${it.coordinate.latitude}")
-                sensorObserver.onSensorChanged()
+            sensor?.locationChangedFlow?.collect { location ->
+                Log.e("location changed: ", "location changed: ${location.coordinate.latitude}")
+                sensorObserver.onSensorChanged(location)
             }
         }
     }

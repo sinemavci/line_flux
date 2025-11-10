@@ -23,4 +23,14 @@ class LocationDataSourceDTO with _$LocationDataSourceDTO {
   LocationDataSource toDataModel() {
     return LocationDataSource();
   }
+
+  @override
+  String get id => id;
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+    };
+  }
 }

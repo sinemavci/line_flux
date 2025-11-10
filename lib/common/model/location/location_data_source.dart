@@ -1,3 +1,4 @@
+import 'package:line_flux/common/observers/sensor_observer.dart';
 import 'package:uuid/uuid.dart';
 
 class LocationDataSource {
@@ -6,7 +7,7 @@ class LocationDataSource {
 
   // final _locationHook = LocationHook();
   //
-  // final _locationObserver = LocationObserver();
+  final _sensorObserver = SensorObserver();
 
   Future<void> start() async {
    // await _locationHook.start(datasource: this);

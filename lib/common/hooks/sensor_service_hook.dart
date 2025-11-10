@@ -11,6 +11,7 @@ class SensorServiceHook {
     final jsonResponse = jsonEncode(LocationDataSourceDTO.fromDataModel(dataSource).toJson());
     try {
       await _hostApi.start(jsonResponse);
+     await _hostApi.on(jsonResponse);
     }
     catch(e, stace) {
       throw 'exception: ${e} ${stace}';
