@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-import 'package:line_flux/common/dto/location/location_datasource_dto.dart';
-import 'package:line_flux/common/model/location/location_data_source.dart';
-import 'package:line_flux/pigeon/location_host_api.g.dart';
+import 'package:line_flux/common/dto/sensor/sensor_dto.dart';
+import 'package:line_flux/common/model/location/sensor.dart';
+import 'package:line_flux/pigeon/sensor_host_api.g.dart';
 
 class SensorServiceHook {
-  final _hostApi = LocationHostApi();
+  final _hostApi = SensorHostApi();
 
-  Future<void> start({required LocationDataSource dataSource}) async {
-    final jsonResponse = jsonEncode(LocationDataSourceDTO.fromDataModel(dataSource).toJson());
+  Future<void> start({required Sensor sensor}) async {
+    final jsonResponse = jsonEncode(SensorDTO.fromDataModel(sensor).toJson());
     try {
       await _hostApi.start(jsonResponse);
      await _hostApi.on(jsonResponse);

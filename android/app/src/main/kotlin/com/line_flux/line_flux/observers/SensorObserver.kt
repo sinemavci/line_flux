@@ -60,14 +60,6 @@ class SensorObserver {
 //        if (listenerEvents.any { item -> item.value == event.getEventType() }) {
         val sender = mutableMapOf(
             "Location" to LocationDTO.fromDataModel(location)
-//                "EventName" to event.getEventType().name,
-//                "DataSourceId" to event.getLocationDataSource().id,
-//                "Value" to when (event.getEventType()) {
-//                    LocationEvent.Type.LocationChanged -> LocationDTO.fromDataModel(event.getValue() as Location)
-//                    LocationEvent.Type.StatusChanged -> LocationDataSourceStatus.valueOf(event.getValue() as String)
-//                    LocationEvent.Type.HeadingChanged -> event.getValue() as Double
-//                    LocationEvent.Type.DeviceHeadingChanged -> event.getValue() as Double
-//                }
         )
         sensorEventHandler?.send(gson.toJson(sender))
 //        }

@@ -1,7 +1,7 @@
 import 'package:line_flux/common/observers/sensor_observer.dart';
 import 'package:uuid/uuid.dart';
 
-class LocationDataSource {
+class Sensor {
   String id = const Uuid().v4();
   //todo
 

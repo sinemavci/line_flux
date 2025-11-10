@@ -16,7 +16,7 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 
 flutter pub run pigeon \
---input lib/pigeon/location_host_api.dart \
---dart_out lib/pigeon/location_host_api.g.dart \
---kotlin_out android/app/src/main/kotlin/com/line_flux/line_flux/LocationModulePigeon.kt --kotlin_package "com.line_flux.line_flux.location"
+--input lib/pigeon/sensor_host_api.dart \
+--dart_out lib/pigeon/sensor_host_api.g.dart \
+--kotlin_out android/app/src/main/kotlin/com/line_flux/line_flux/SensorModulePigeon.kt --kotlin_package "com.line_flux.line_flux.sensor"
 

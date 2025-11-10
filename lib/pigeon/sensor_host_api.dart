@@ -1,14 +1,14 @@
 import 'package:pigeon/pigeon.dart';
 
 @HostApi()
-abstract class LocationHostApi {
-  void start(String dataSource);
+abstract class SensorHostApi {
+  void start(String sensor);
 
   void stop();
 
-  void on(String dataSource);
+  void on(String sensor);
 
-  String? getStatus(String dataSourceId);
+  String? getStatus(String sensorId);
   //
   // void on(String viewKey, String dataSourceId, String eventName, String eventId);
   //

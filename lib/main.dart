@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:line_flux/common/model/location/location_data_source.dart';
+import 'package:line_flux/common/model/location/sensor.dart';
 import 'package:line_flux/common/sensor_service/sensor_service.dart';
 
 void main() {
@@ -20,8 +20,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final locationDataSource = LocationDataSource();
-      await sensorService.start(dataSource: locationDataSource);
+      final sensor = Sensor();
+      await sensorService.start(sensor: sensor);
     });
     super.initState();
   }

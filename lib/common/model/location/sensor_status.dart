@@ -1,5 +1,5 @@
 /// The list of possible LocationDataSource statuses. This is used to determine the status of a LocationDataSource.
-enum LocationDatasourceStatus {
+enum SensorStatus {
   /// LocationDataSource not yet start.
   init('INIT'),
 
@@ -17,12 +17,12 @@ enum LocationDatasourceStatus {
 
   final String identifier;
 
-  const LocationDatasourceStatus(this.identifier);
+  const SensorStatus(this.identifier);
 
-  factory LocationDatasourceStatus.fromIdentifier(String? identifier) {
-    return LocationDatasourceStatus.values.firstWhere(
+  factory SensorStatus.fromIdentifier(String? identifier) {
+    return SensorStatus.values.firstWhere(
           (element) => element.identifier == identifier,
-      orElse: () => LocationDatasourceStatus.init,
+      orElse: () => SensorStatus.init,
     );
   }
 }
