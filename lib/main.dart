@@ -24,8 +24,10 @@ class _MyAppState extends State<MyApp> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final isGranted = await permissionService.requestLocationPermission();
       print("isGranted: ${isGranted}");
-    //   final sensor = Sensor();
-    //   await sensorService.start(sensor: sensor);
+      if(isGranted) {
+        final sensor = Sensor();
+        await sensorService.start(sensor: sensor);
+      }
     });
     super.initState();
   }

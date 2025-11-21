@@ -12,6 +12,7 @@ import com.line_flux.line_flux.observers.SensorObserver
 import com.line_flux.line_flux.sensor.SensorHostApi
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
+import java.lang.Exception
 
 // todo: projenin amacini kafanda oturt, sema cikar. Simdilik kullanici tracking'e baslat ile tek gps ds dinleyecek ve bu da arka planda
 // sensor verisini toplayip painter sinifina gondererk cizgi cizecek. Bunu da hariyata overlay olarak ekleyerek yapacagiz.
@@ -24,32 +25,48 @@ class SensorModule : SensorHostApi {
     private val sensorObserver = SensorObserver()
 
     @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
-    override fun start(sensor: String) {
-        val sensorDTO: SensorDTO =
-            jsonConverter.fromJson(sensor, SensorDTO::class.java)
-        val sensor = sensorDTO.toDataModel()
-        sensorManager.setSensor(sensor)
-        sensorManager.startActivity()
-    }
-
-    override fun stop() {
-        sensorManager.stopActivity()
-    }
-
-    @OptIn(DelicateCoroutinesApi::class)
-    override fun on(sensor: String) {
-        //todo: apply id match for getsensor
-        val sensor = sensorManager.getSensor()
-        ServiceLocator.scope.launch(Dispatchers.Main) {
-            sensor?.locationChangedFlow?.collect { location ->
-                Log.e("sensor changed: ", "sensor changed: ${location.coordinate.latitude}")
-                sensorObserver.onSensorChanged(location)
-            }
+    override fun start(sensor: String, callback: (Result<Boolean>) -> Unit) {
+        try {
+            val sensorDTO: SensorDTO =
+                jsonConverter.fromJson(sensor, SensorDTO::class.java)
+            val sensor = sensorDTO.toDataModel()
+            sensorManager.setSensor(sensor)
+            sensorManager.startActivity()
+            callback.invoke(Result.success(true))
+        }
+        catch (e: Exception) {
+            callback.invoke(Result.failure(e))
         }
     }
 
-    override fun getStatus(sensorId: String): String? {
+    override fun stop(callback: (Result<Boolean>) -> Unit) {
+        try {
+            sensorManager.stopActivity()
+            callback.invoke(Result.success(true))
+        }
+        catch (e: Exception) {
+            callback.invoke(Result.failure(e))
+        }
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    override fun on(sensor: String, callback: (Result<Boolean>) -> Unit) {
+        try {
+            //todo: apply id match for getsensor
+            val sensor = sensorManager.getSensor()
+            ServiceLocator.scope.launch(Dispatchers.Main) {
+                sensor?.locationChangedFlow?.collect { location ->
+                    Log.e("sensor changed: ", "sensor changed: ${location.coordinate.latitude}")
+                    sensorObserver.onSensorChanged(location)
+                }
+            }
+        }
+        catch (e: Exception) {
+            callback.invoke(Result.failure(e))
+        }
+    }
+
+    override fun getStatus(sensorId: String, callback: (Result<String>) -> Unit) {
         //todo
-        return null
     }
 }

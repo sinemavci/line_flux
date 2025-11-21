@@ -56,12 +56,13 @@ private open class SensorModulePigeonPigeonCodec : StandardMessageCodec() {
   }
 }
 
+
 /** Generated interface from Pigeon that represents a handler of messages from Flutter. */
 interface SensorHostApi {
-  fun start(sensor: String)
-  fun stop()
-  fun on(sensor: String)
-  fun getStatus(sensorId: String): String?
+  fun start(sensor: String, callback: (Result<Boolean>) -> Unit)
+  fun stop(callback: (Result<Boolean>) -> Unit)
+  fun on(sensor: String, callback: (Result<Boolean>) -> Unit)
+  fun getStatus(sensorId: String, callback: (Result<String>) -> Unit)
 
   companion object {
     /** The codec used by SensorHostApi. */
@@ -78,13 +79,15 @@ interface SensorHostApi {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
             val sensorArg = args[0] as String
-            val wrapped: List<Any?> = try {
-              api.start(sensorArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              SensorModulePigeonPigeonUtils.wrapError(exception)
+            api.start(sensorArg) { result: Result<Boolean> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(SensorModulePigeonPigeonUtils.wrapError(error))
+              } else {
+                val data = result.getOrNull()
+                reply.reply(SensorModulePigeonPigeonUtils.wrapResult(data))
+              }
             }
-            reply.reply(wrapped)
           }
         } else {
           channel.setMessageHandler(null)
@@ -94,13 +97,15 @@ interface SensorHostApi {
         val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.line_flux.SensorHostApi.stop$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { _, reply ->
-            val wrapped: List<Any?> = try {
-              api.stop()
-              listOf(null)
-            } catch (exception: Throwable) {
-              SensorModulePigeonPigeonUtils.wrapError(exception)
+            api.stop{ result: Result<Boolean> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(SensorModulePigeonPigeonUtils.wrapError(error))
+              } else {
+                val data = result.getOrNull()
+                reply.reply(SensorModulePigeonPigeonUtils.wrapResult(data))
+              }
             }
-            reply.reply(wrapped)
           }
         } else {
           channel.setMessageHandler(null)
@@ -112,13 +117,15 @@ interface SensorHostApi {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
             val sensorArg = args[0] as String
-            val wrapped: List<Any?> = try {
-              api.on(sensorArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              SensorModulePigeonPigeonUtils.wrapError(exception)
+            api.on(sensorArg) { result: Result<Boolean> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(SensorModulePigeonPigeonUtils.wrapError(error))
+              } else {
+                val data = result.getOrNull()
+                reply.reply(SensorModulePigeonPigeonUtils.wrapResult(data))
+              }
             }
-            reply.reply(wrapped)
           }
         } else {
           channel.setMessageHandler(null)
@@ -130,12 +137,15 @@ interface SensorHostApi {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
             val sensorIdArg = args[0] as String
-            val wrapped: List<Any?> = try {
-              listOf(api.getStatus(sensorIdArg))
-            } catch (exception: Throwable) {
-              SensorModulePigeonPigeonUtils.wrapError(exception)
+            api.getStatus(sensorIdArg) { result: Result<String> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(SensorModulePigeonPigeonUtils.wrapError(error))
+              } else {
+                val data = result.getOrNull()
+                reply.reply(SensorModulePigeonPigeonUtils.wrapResult(data))
+              }
             }
-            reply.reply(wrapped)
           }
         } else {
           channel.setMessageHandler(null)
