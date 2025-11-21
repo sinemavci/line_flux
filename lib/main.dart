@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:line_flux/common/model/location/sensor.dart';
+import 'package:line_flux/common/permission_service/permission_service.dart';
 import 'package:line_flux/common/sensor_service/sensor_service.dart';
 
 void main() {
@@ -16,12 +17,15 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
   final sensorService = SensorService();
+  final permissionService = PermissionService();
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final sensor = Sensor();
-      await sensorService.start(sensor: sensor);
+      final isGranted = await permissionService.requestLocationPermission();
+      print("isGranted: ${isGranted}");
+    //   final sensor = Sensor();
+    //   await sensorService.start(sensor: sensor);
     });
     super.initState();
   }

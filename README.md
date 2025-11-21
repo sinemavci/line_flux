@@ -20,3 +20,8 @@ flutter pub run pigeon \
 --dart_out lib/pigeon/sensor_host_api.g.dart \
 --kotlin_out android/app/src/main/kotlin/com/line_flux/line_flux/SensorModulePigeon.kt --kotlin_package "com.line_flux.line_flux.sensor"
 
+flutter pub run pigeon \
+--input lib/pigeon/permission_host_api.dart \
+--dart_out lib/pigeon/permission_host_api.g.dart \
+--kotlin_out android/app/src/main/kotlin/com/line_flux/line_flux/PermissionModulePigeon.kt --kotlin_package "com.line_flux.line_flux.permission"
+
